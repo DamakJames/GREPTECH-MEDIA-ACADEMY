@@ -23,15 +23,16 @@ flowchart LR
 ## 📋 Granular Stage Breakdown
 
 ### Stage 01: Frontend & UI/UX Design System
-* **Status**: 🟡 **Setup & Awaiting UI Assets**
+* **Status**: 🟢 **Completed & Deployed**
 * **Focus**: Build the full public website, design system, responsive layouts, 15 complete routes, and admissions form frontend.
 * **Dependencies**: Official logo and UI design assets.
 * **Deliverables**:
   - [x] Initial documentation, repository setup, and brand styling guides.
-  - [ ] Vite + React + TypeScript + Tailwind CSS configuration with custom theme tokens.
-  - [ ] Reusable design system: Header, Footer, Hero, Button, Badge, Card, Modal, Accordion, Input, ImageGallery.
-  - [ ] Homepage with 13 distinct cinematic sections.
-  - [ ] 15 public routes configured with React Router v6:
+  - [x] Vite + React + TypeScript + Tailwind CSS configuration with custom theme tokens.
+  - [x] Streamlined navigation with search modal, clean active states, and mobile drawers.
+  - [x] Reusable design system: Header, Footer, Hero, Button, Badge, Card, Modal, Accordion, Input, ImageGallery.
+  - [x] Homepage with 13 distinct cinematic sections matching design mockup.
+  - [x] 15 public routes configured with React Router v6:
     - `/` (Home)
     - `/about` (About Greptech)
     - `/courses` (Courses Catalogue)
@@ -47,7 +48,7 @@ flowchart LR
     - `/contact` (Contact Form, WhatsApp, Email)
     - `/login` (Student & Instructor Login Gateway)
     - `/certificate/verify/:certificateId` (Public Certificate Verification UI)
-  - [ ] Professional, validated multi-step application form with passport photo preview.
+  - [x] Professional, validated multi-step application form with passport photo preview.
 * **Verification & Acceptance Criteria**:
   - Zero TypeScript build errors (`npm run build`).
   - Seamless navigation across desktop, tablet, and mobile breakpoints.
@@ -57,14 +58,20 @@ flowchart LR
 ---
 
 ### Stage 02: Firebase Setup & Backend Foundation
-* **Status**: ⚪ *Pending Stage 1 Approval*
+* **Status**: 🟢 **Completed**
 * **Focus**: Provision Firebase environment, client SDK initialization, Local Emulator Suite configuration, and security rules baseline.
-* **Dependencies**: Stage 1 completion, Firebase project provisioning.
+* **Dependencies**: Stage 1 completion.
 * **Deliverables**:
-  - Firebase configuration module (`src/lib/firebase.ts`).
-  - `.env.example` with required Firebase config keys (API key, Project ID, App ID, Storage Bucket, etc.).
-  - Local Firebase Emulator setup (`firebase.json` for Auth, Firestore, Storage, Functions).
-  - Baseline Firestore Security Rules (`firestore.rules`) and Storage Rules (`storage.rules`).
+  - [x] Firebase Web SDK (`firebase` v10+) installed.
+  - [x] Centralized Firebase client configuration (`src/lib/firebase.ts`) initializing Auth, Firestore, and Storage.
+  - [x] `.env.example` configured for Firebase project credentials.
+  - [x] Local Firebase Emulator setup (`firebase.json` for Auth, Firestore, Storage, Functions, UI).
+  - [x] Baseline Firestore Security Rules (`firestore.rules`) and Storage Security Rules (`storage.rules`).
+  - [x] Typed service abstraction layer created (`src/services/admissions.service.ts`, `src/services/courses.service.ts`, `src/services/auth.service.ts`).
+  - [x] Integration with admissions application form with atomic reference generation.
+* **Verification & Acceptance Criteria**:
+  - Verified local and production build with Firebase SDK.
+  - Graceful fallback in preview mode when credentials are unconfigured.
 * **Verification & Acceptance Criteria**:
   - Successful connection to Firebase Emulator Suite in local development.
   - Clean separation of development and production credentials.

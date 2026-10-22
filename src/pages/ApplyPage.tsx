@@ -6,15 +6,15 @@ import {
   AlertCircle,
   ArrowRight,
   User,
-  Phone,
-  Mail,
-  Calendar,
-  MapPin,
-  BookOpen,
   Shield,
   X,
+  Loader2,
+  Database,
+  BookOpen,
 } from 'lucide-react';
 import { coursesData } from '../data/courses';
+import { AdmissionsService } from '../services/admissions.service';
+import { isFirebaseConfigured } from '../lib/firebase';
 
 export const ApplyPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -144,18 +144,43 @@ export const ApplyPage: React.FC = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState<boolean>(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateForm()) {
       window.scrollTo({ top: 300, behavior: 'smooth' });
       return;
     }
 
-    // Generate mock reference for Stage 1 validation testing
-    const randomRef = 'GMA-2026-' + Math.floor(1000 + Math.random() * 9000);
-    setReferenceId(randomRef);
-    setIsSubmitted(true);
-    window.scrollTo({ top: 100, behavior: 'smooth' });
+    setSubmitting(true);
+    try {
+      const result = await AdmissionsService.submitApplication({
+        fullName: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        dateOfBirth: formData.dateOfBirth,
+        residentialAddress: formData.residentialAddress,
+        selectedCourse: formData.selectedCourse,
+        previousExperience: formData.previousExperience as any,
+        educationalBackground: formData.educationalBackground,
+        passportPhoto: passportFile,
+        emergencyContact: {
+          name: formData.emergencyName,
+          phone: formData.emergencyPhone,
+          relationship: formData.emergencyRelationship,
+        },
+        privacyConsent: formData.privacyConsent,
+      });
+
+      setReferenceId(result.referenceId);
+      setIsSubmitted(true);
+      window.scrollTo({ top: 100, behavior: 'smooth' });
+    } catch (err) {
+      console.error('Submission error:', err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -176,11 +201,18 @@ export const ApplyPage: React.FC = () => {
           </p>
         </div>
 
-        {/* Stage 1 Notice Banner */}
+        {/* Backend Status Banner */}
         <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-start gap-3">
-          <AlertCircle className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-          <div className="text-xs text-orange-900 leading-relaxed">
-            <span className="font-bold">Stage 1 Frontend Mode:</span> Form validation, photo uploads, and user flows are fully functional on this page. Submission to the live Cloud Firestore database will be activated in Stage 3 (Admissions System).
+          <Database className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
+          <div className="text-xs text-orange-950 leading-relaxed">
+            <span className="font-bold">
+              {isFirebaseConfigured
+                ? 'Cloud Firestore & Storage Connected:'
+                : 'Stage 2 Architecture Ready:'}
+            </span>{' '}
+            {isFirebaseConfigured
+              ? 'Applications write atomically to Firestore with passport photo uploads in Firebase Storage.'
+              : 'Firebase SDK and data services are initialized. Add your project keys to .env.local to route directly to your live Firebase project.'}
           </div>
         </div>
 
@@ -596,10 +628,20 @@ export const ApplyPage: React.FC = () => {
               </p>
               <button
                 type="submit"
-                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors shadow-brand-glow transform hover:-translate-y-0.5"
+                disabled={submitting}
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors shadow-brand-glow transform hover:-translate-y-0.5 disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                <span>Submit Application</span>
-                <ArrowRight className="w-4 h-4" />
+                {submitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    <span>Submitting Application...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Submit Application</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </>
+                )}
               </button>
             </div>
           </form>
