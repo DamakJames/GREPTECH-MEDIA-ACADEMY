@@ -4,6 +4,7 @@ export interface Course {
   title: string;
   category: 'visual' | 'audio' | 'design' | 'production';
   duration: string;
+  durationOptions?: string[];
   format: string;
   shortDescription: string;
   fullOverview: string;
@@ -82,6 +83,7 @@ export interface ApplicationFormData {
   dateOfBirth: string;
   residentialAddress: string;
   selectedCourse: string;
+  selectedDuration?: string;
   previousExperience: 'beginner' | 'intermediate' | 'advanced';
   educationalBackground: string;
   passportPhoto: File | null;

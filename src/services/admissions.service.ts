@@ -22,6 +22,7 @@ export interface ApplicationRecord {
   dateOfBirth: string;
   residentialAddress: string;
   selectedCourse: string;
+  selectedDuration?: string;
   previousExperience: string;
   educationalBackground: string;
   emergencyContact: {
@@ -117,6 +118,7 @@ export const AdmissionsService = {
       dateOfBirth: data.dateOfBirth,
       residentialAddress: data.residentialAddress,
       selectedCourse: data.selectedCourse,
+      selectedDuration: data.selectedDuration || '3-months',
       previousExperience: data.previousExperience,
       educationalBackground: data.educationalBackground,
       emergencyContact: data.emergencyContact,

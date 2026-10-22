@@ -27,6 +27,7 @@ export const ApplyPage: React.FC = () => {
     dateOfBirth: '',
     residentialAddress: '',
     selectedCourse: preselectedCourse,
+    selectedDuration: '3-months',
     previousExperience: 'beginner',
     educationalBackground: 'High School',
     emergencyName: '',
@@ -162,6 +163,7 @@ export const ApplyPage: React.FC = () => {
         dateOfBirth: formData.dateOfBirth,
         residentialAddress: formData.residentialAddress,
         selectedCourse: formData.selectedCourse,
+        selectedDuration: formData.selectedDuration,
         previousExperience: formData.previousExperience as any,
         educationalBackground: formData.educationalBackground,
         passportPhoto: passportFile,
@@ -262,6 +264,7 @@ export const ApplyPage: React.FC = () => {
                     dateOfBirth: '',
                     residentialAddress: '',
                     selectedCourse: '',
+                    selectedDuration: '3-months',
                     previousExperience: 'beginner',
                     educationalBackground: 'High School',
                     emergencyName: '',
@@ -434,6 +437,24 @@ export const ApplyPage: React.FC = () => {
                 </div>
 
                 <div>
+                  <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
+                    Course Duration & Schedule *
+                  </label>
+                  <select
+                    name="selectedDuration"
+                    value={formData.selectedDuration}
+                    onChange={handleInputChange}
+                    className="w-full px-4 py-3 rounded-xl border border-gray-300 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:border-brand-orange focus:ring-orange-100"
+                  >
+                    <option value="1-week">1 Week — Crash Course / Masterclass</option>
+                    <option value="2-weeks">2 Weeks — Intensive Bootcamp</option>
+                    <option value="1-month">1 Month — Professional Certificate</option>
+                    <option value="3-months">3 Months — Comprehensive Diploma</option>
+                    <option value="weekend">Weekend Executive Track (Sat & Sun)</option>
+                  </select>
+                </div>
+
+                <div className="sm:col-span-2">
                   <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
                     Educational Background *
                   </label>

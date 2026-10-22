@@ -241,10 +241,13 @@ export const AdminAdmissionsPage: React.FC = () => {
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-100 space-y-1">
-                    <span className="text-gray-400 font-bold uppercase text-[10px]">Course Applied</span>
+                    <span className="text-gray-400 font-bold uppercase text-[10px]">Course & Schedule</span>
                     <p className="font-semibold text-brand-black capitalize">
                       {selectedApp.selectedCourse.replace(/-/g, ' ')}
                     </p>
+                    <span className="inline-block text-[10px] font-bold text-brand-orange bg-orange-50 px-2 py-0.5 rounded">
+                      Track: {selectedApp.selectedDuration || '3 Months (Standard)'}
+                    </span>
                   </div>
 
                   <div className="p-3.5 rounded-xl bg-gray-50 border border-gray-100 space-y-1">

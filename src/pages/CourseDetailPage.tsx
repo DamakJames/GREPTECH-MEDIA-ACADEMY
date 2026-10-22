@@ -195,6 +195,19 @@ export const CourseDetailPage: React.FC = () => {
                   <span className="text-gray-500">Duration</span>
                   <span className="font-bold text-brand-black">{course.duration}</span>
                 </div>
+                <div className="py-2 border-b border-gray-100 space-y-1.5">
+                  <span className="text-gray-500 block">Available Tracks:</span>
+                  <div className="flex flex-wrap gap-1.5">
+                    {course.durationOptions?.map((opt, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-0.5 rounded text-[10px] font-bold bg-orange-50 text-brand-orange border border-orange-200/60"
+                      >
+                        {opt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
                 <div className="flex justify-between items-center py-2 border-b border-gray-100">
                   <span className="text-gray-500">Mode</span>
                   <span className="font-bold text-brand-black">{course.format}</span>
