@@ -16,8 +16,13 @@ import {
   BookOpen,
   ArrowRight,
   ExternalLink,
+  Key,
+  Copy,
+  Check,
+  Share2,
 } from 'lucide-react';
 import { AdmissionsService, ApplicationRecord } from '../services/admissions.service';
+import { LMSService } from '../services/lms.service';
 
 export const AdminAdmissionsPage: React.FC = () => {
   const [applications, setApplications] = useState<ApplicationRecord[]>([]);
@@ -26,6 +31,13 @@ export const AdminAdmissionsPage: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [adminNoteInput, setAdminNoteInput] = useState<string>('');
   const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const [provisionedCreds, setProvisionedCreds] = useState<{
+    email: string;
+    temporaryPassword: string;
+    portalUrl: string;
+    studentName: string;
+  } | null>(null);
 
   useEffect(() => {
     loadApplications();
@@ -43,6 +55,39 @@ export const AdminAdmissionsPage: React.FC = () => {
   const handleSelectApp = (app: ApplicationRecord) => {
     setSelectedApp(app);
     setAdminNoteInput(app.adminNotes || '');
+    setProvisionedCreds(null);
+  };
+
+  const handleApproveAndProvision = async () => {
+    if (!selectedApp) return;
+    setSaving(true);
+    try {
+      const creds = await LMSService.approveAndProvisionStudent({
+        fullName: selectedApp.fullName,
+        email: selectedApp.email,
+        courseSlug: selectedApp.selectedCourse,
+        duration: selectedApp.selectedDuration,
+        referenceId: selectedApp.referenceId,
+      });
+
+      const note = `Admission Approved & Student Portal Credentials Issued (${creds.email}).`;
+      await AdmissionsService.updateStatus(selectedApp.referenceId, 'accepted', note);
+
+      const updated = { ...selectedApp, status: 'accepted' as const, adminNotes: note };
+      setSelectedApp(updated);
+      setApplications((prev) =>
+        prev.map((a) => (a.referenceId === selectedApp.referenceId ? updated : a))
+      );
+      setAdminNoteInput(note);
+      setProvisionedCreds({
+        ...creds,
+        studentName: selectedApp.fullName,
+      });
+    } catch (e) {
+      console.error('Approve & provision failed:', e);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleUpdateStatus = async (newStatus: ApplicationRecord['status']) => {
@@ -60,6 +105,14 @@ export const AdminAdmissionsPage: React.FC = () => {
     } finally {
       setSaving(false);
     }
+  };
+
+  const copyCredsToClipboard = () => {
+    if (!provisionedCreds) return;
+    const text = `Welcome to Greptech Media Academy! Your Student Portal account has been approved and activated.\n\nPortal Login URL: ${provisionedCreds.portalUrl}\nStudent Email: ${provisionedCreds.email}\nTemporary Password: ${provisionedCreds.temporaryPassword}\n\nPlease sign in to access your course syllabus, video lessons, and assignment desk.`;
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
   };
 
   const filteredApps = applications.filter((app) => {
@@ -292,12 +345,71 @@ export const AdminAdmissionsPage: React.FC = () => {
                   />
                 </div>
 
+                {/* Generated Student Credentials Card */}
+                {provisionedCreds && (
+                  <div className="p-4 rounded-xl bg-green-50 border border-green-200 space-y-3 animate-in fade-in">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs font-bold text-green-900">
+                        <Key className="w-4 h-4 text-green-700" />
+                        <span>Dedicated Student Portal Credentials Generated</span>
+                      </div>
+                      <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-green-200 text-green-900">
+                        Ready to Learn
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-white p-3 rounded-lg border border-green-200">
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 block">Student Email</span>
+                        <span className="font-mono font-bold text-brand-black">{provisionedCreds.email}</span>
+                      </div>
+                      <div>
+                        <span className="text-[10px] uppercase font-bold text-gray-400 block">Assigned Password</span>
+                        <span className="font-mono font-bold text-brand-orange">{provisionedCreds.temporaryPassword}</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={copyCredsToClipboard}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-brand-black hover:bg-gray-800 transition-colors"
+                      >
+                        {copied ? <Check className="w-3.5 h-3.5 text-green-400" /> : <Copy className="w-3.5 h-3.5" />}
+                        <span>{copied ? 'Copied to Clipboard!' : 'Copy Credentials'}</span>
+                      </button>
+
+                      <a
+                        href={`https://wa.me/?text=${encodeURIComponent(
+                          `Hello ${provisionedCreds.studentName}, your Greptech Media Academy application has been approved!\n\nYour Student Portal is active:\nURL: ${provisionedCreds.portalUrl}\nEmail: ${provisionedCreds.email}\nPassword: ${provisionedCreds.temporaryPassword}\n\nSign in to start your video lessons and view your assignments!`
+                        )}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-green-800 bg-green-100 hover:bg-green-200 border border-green-300 transition-colors"
+                      >
+                        <Share2 className="w-3.5 h-3.5" />
+                        <span>Share to Student via WhatsApp</span>
+                      </a>
+                    </div>
+                  </div>
+                )}
+
                 {/* Action Buttons */}
                 <div className="pt-4 border-t border-gray-100 space-y-3">
                   <span className="text-[10px] uppercase font-bold text-gray-400 block">
-                    Change Application Status
+                    Admissions Faculty Approval & Actions
                   </span>
                   <div className="flex flex-wrap gap-2.5">
+                    <button
+                      type="button"
+                      disabled={saving}
+                      onClick={handleApproveAndProvision}
+                      className="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-md flex items-center gap-2 disabled:opacity-70"
+                    >
+                      <Key className="w-3.5 h-3.5" />
+                      <span>Approve & Generate Portal Access</span>
+                    </button>
+
                     <button
                       type="button"
                       disabled={saving}
@@ -310,19 +422,10 @@ export const AdminAdmissionsPage: React.FC = () => {
                     <button
                       type="button"
                       disabled={saving}
-                      onClick={() => handleUpdateStatus('accepted')}
-                      className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-green-600 hover:bg-green-700 transition-colors shadow-sm"
-                    >
-                      Issue Admission Offer (Accept)
-                    </button>
-
-                    <button
-                      type="button"
-                      disabled={saving}
                       onClick={() => handleUpdateStatus('enrolled')}
                       className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-purple-600 hover:bg-purple-700 transition-colors shadow-sm"
                     >
-                      Mark as Enrolled Student
+                      Mark as Enrolled
                     </button>
 
                     <button
@@ -331,7 +434,7 @@ export const AdminAdmissionsPage: React.FC = () => {
                       onClick={() => handleUpdateStatus('rejected')}
                       className="px-4 py-2.5 rounded-xl text-xs font-bold text-red-600 bg-red-50 hover:bg-red-100 border border-red-200 transition-colors"
                     >
-                      Request Info / Decline
+                      Decline
                     </button>
                   </div>
                 </div>

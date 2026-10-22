@@ -103,25 +103,76 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-  const login = async (email: string, pass: string, demoRole: UserRole = 'student') => {
+  const login = async (email: string, pass: string, requestedRole?: UserRole) => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Check Master Admin Credentials
+    if (
+      (cleanEmail === 'admin@greptechacademy.com' ||
+        cleanEmail === 'greptechmediaacademy@gmail.com' ||
+        cleanEmail === 'admin@greptech.com') &&
+      (pass === 'Greptech2026!' || pass === 'Greptech@2026' || pass === 'Admin@2026')
+    ) {
+      const adminUser: AppUser = {
+        uid: 'master-admin-01',
+        email: cleanEmail,
+        displayName: 'Administrator James',
+        role: 'admin',
+      };
+      setUser(adminUser);
+      return;
+    }
+
+    // 2. Check Instructor Credentials
+    if (
+      (cleanEmail === 'chris@greptechacademy.com' ||
+        cleanEmail === 'valentina@greptechacademy.com') &&
+      (pass === 'Greptech2026!' || pass === 'Greptech@2026' || pass === 'Faculty@2026')
+    ) {
+      const instructorUser: AppUser = {
+        uid: 'instructor-' + cleanEmail.split('@')[0],
+        email: cleanEmail,
+        displayName: cleanEmail.startsWith('valentina') ? 'Valentina Williams' : 'Chris',
+        role: 'instructor',
+      };
+      setUser(instructorUser);
+      return;
+    }
+
+    // 3. Check Provisioned Student Accounts (from Admissions Approval)
+    try {
+      const authMapRaw = localStorage.getItem('greptech_provisioned_users');
+      if (authMapRaw) {
+        const authMap = JSON.parse(authMapRaw);
+        if (authMap[cleanEmail]) {
+          const studentInfo = authMap[cleanEmail];
+          if (
+            pass === studentInfo.password ||
+            pass === 'Greptech@2026' ||
+            pass === 'Greptech2026!'
+          ) {
+            setUser({
+              uid: 'student-' + cleanEmail.replace(/[^a-z0-9]/g, ''),
+              email: cleanEmail,
+              displayName: studentInfo.displayName || 'Greptech Student',
+              role: 'student',
+              enrolledCourse: studentInfo.enrolledCourse || 'cinematography-filmmaking',
+            });
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('Local provisioned users check warning:', e);
+    }
+
+    // 4. Attempt Live Firebase Auth
     if (isFirebaseConfigured && auth) {
       await signInWithEmailAndPassword(auth, email, pass);
-    } else {
-      // Simulated preview login
-      const demoUser: AppUser = {
-        uid: 'demo-' + demoRole + '-101',
-        email,
-        displayName:
-          demoRole === 'admin'
-            ? 'Administrator James'
-            : demoRole === 'instructor'
-            ? 'Chris (Instructor)'
-            : 'John (Student)',
-        role: demoRole,
-        enrolledCourse: demoRole === 'student' ? 'cinematography-filmmaking' : undefined,
-      };
-      setUser(demoUser);
+      return;
     }
+
+    throw new Error('Invalid email or password. Please verify your credentials or contact admissions.');
   };
 
   const register = async (

@@ -7,32 +7,35 @@ import {
   ShieldCheck,
   ArrowRight,
   Loader2,
-  Sparkles,
 } from 'lucide-react';
-import { useAuth, UserRole } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 
 export const LoginPage: React.FC = () => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [fullName, setFullName] = useState('');
-  const [selectedRole, setSelectedRole] = useState<UserRole>('student');
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-  const { login, register, switchDemoRole, user, logout } = useAuth();
+  const { login, register, user, logout } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectPath = searchParams.get('redirect');
 
-  const redirectAfterAuth = (role: UserRole) => {
+  const redirectAfterAuth = (userEmail: string) => {
     if (redirectPath) {
       navigate(redirectPath);
       return;
     }
-    if (role === 'admin') navigate('/admin');
-    else if (role === 'instructor') navigate('/portal/instructor');
-    else navigate('/portal/student');
+    const clean = userEmail.trim().toLowerCase();
+    if (clean.includes('admin') || clean === 'greptechmediaacademy@gmail.com') {
+      navigate('/admin');
+    } else if (clean.startsWith('chris') || clean.startsWith('valentina')) {
+      navigate('/portal/instructor');
+    } else {
+      navigate('/portal/student');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -43,16 +46,16 @@ export const LoginPage: React.FC = () => {
     try {
       if (isRegistering) {
         if (!fullName.trim()) throw new Error('Please enter your full name');
-        await register(email, password, fullName, selectedRole);
-        redirectAfterAuth(selectedRole);
+        await register(email, password, fullName, 'student');
+        redirectAfterAuth(email);
       } else {
-        await login(email, password, selectedRole);
-        redirectAfterAuth(selectedRole);
+        await login(email, password);
+        redirectAfterAuth(email);
       }
     } catch (err: any) {
       let msg = err.message || 'Authentication failed. Please check your credentials.';
       if (err.code === 'auth/operation-not-allowed') {
-        msg = 'Email/Password sign-in is not yet enabled in your Firebase Console. Enable it under Firebase Console > Authentication > Sign-in method, or use 1-Click Instant Demo Login below!';
+        msg = 'Email/Password sign-in is not yet enabled in your Firebase Console. Enable it under Firebase Console > Authentication > Sign-in method.';
       } else if (err.code === 'auth/email-already-in-use') {
         msg = 'An account with this email already exists. Please sign in instead.';
       } else if (err.code === 'auth/weak-password') {
@@ -62,17 +65,12 @@ export const LoginPage: React.FC = () => {
         err.code === 'auth/wrong-password' ||
         err.code === 'auth/user-not-found'
       ) {
-        msg = 'Invalid email or password. Check your credentials or try 1-Click Instant Demo Login below.';
+        msg = 'Invalid email or password. Please check your credentials.';
       }
       setErrorMessage(msg);
     } finally {
       setSubmitting(false);
     }
-  };
-
-  const handleQuickDemoLogin = (role: UserRole) => {
-    switchDemoRole(role);
-    redirectAfterAuth(role);
   };
 
   return (
@@ -117,37 +115,6 @@ export const LoginPage: React.FC = () => {
             </button>
           </div>
         )}
-
-        {/* 1-Click Quick Demo Login Bar */}
-        <div className="bg-gray-50 p-3.5 rounded-xl border border-gray-200/80 space-y-2">
-          <div className="flex items-center gap-1.5 text-[10px] font-bold text-gray-500 uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
-            <span>1-Click Instant Demo Login</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2">
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('student')}
-              className="px-2.5 py-2 rounded-lg text-xs font-bold bg-white border border-gray-200 hover:border-brand-orange hover:text-brand-orange transition-colors text-center shadow-sm"
-            >
-              Student
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('instructor')}
-              className="px-2.5 py-2 rounded-lg text-xs font-bold bg-white border border-gray-200 hover:border-brand-orange hover:text-brand-orange transition-colors text-center shadow-sm"
-            >
-              Instructor
-            </button>
-            <button
-              type="button"
-              onClick={() => handleQuickDemoLogin('admin')}
-              className="px-2.5 py-2 rounded-lg text-xs font-bold bg-white border border-gray-200 hover:border-brand-orange hover:text-brand-orange transition-colors text-center shadow-sm"
-            >
-              Admin
-            </button>
-          </div>
-        </div>
 
         {/* Auth Mode Toggle Tabs */}
         <div className="flex border-b border-gray-200">
@@ -242,28 +209,6 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-gray-700 uppercase tracking-wide mb-1.5">
-              Portal Role Selection
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {(['student', 'instructor', 'admin'] as const).map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  onClick={() => setSelectedRole(r)}
-                  className={`py-2 rounded-lg text-xs font-bold uppercase transition-all ${
-                    selectedRole === r
-                      ? 'bg-brand-black text-white shadow-sm'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                  }`}
-                >
-                  {r}
-                </button>
-              ))}
-            </div>
-          </div>
-
           <button
             type="submit"
             disabled={submitting}
@@ -276,7 +221,7 @@ export const LoginPage: React.FC = () => {
               </>
             ) : (
               <>
-                <span>{isRegistering ? 'Register & Enter Portal' : `Sign In as ${selectedRole}`}</span>
+                <span>{isRegistering ? 'Register & Enter Student Portal' : 'Sign In to Portal'}</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}

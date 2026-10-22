@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, useLocation, Link } from 'react-router-dom';
-import { ShieldAlert, ArrowLeft, RefreshCw } from 'lucide-react';
+import { ShieldAlert, ArrowLeft } from 'lucide-react';
 import { useAuth, UserRole } from '../../context/AuthContext';
 
 interface ProtectedRouteProps {
@@ -12,7 +12,7 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   children,
   allowedRoles,
 }) => {
-  const { user, loading, switchDemoRole } = useAuth();
+  const { user, loading } = useAuth();
   const location = useLocation();
 
   if (loading) {
@@ -43,34 +43,20 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
           <div className="space-y-2">
             <h2 className="text-2xl font-black text-brand-black">Access Restricted</h2>
             <p className="text-xs text-gray-600 leading-relaxed">
-              You are currently signed in as <span className="font-bold uppercase text-brand-orange">{user.role}</span> ({user.email}). This area strictly requires <span className="font-bold uppercase text-brand-black">{allowedRoles.join(' or ')}</span> authorization.
+              This portal requires <span className="font-bold uppercase text-brand-orange">{allowedRoles?.join(' or ')}</span> authorization. You are currently signed in as <span className="font-bold uppercase text-brand-black">{user.role}</span> ({user.email}).
             </p>
           </div>
 
-          {/* Quick Demo Role Switcher */}
-          <div className="p-4 rounded-xl bg-orange-50/70 border border-orange-200 text-left space-y-3">
-            <span className="text-[11px] font-bold text-brand-orange uppercase block tracking-wider">
-              Quick Role Switch (Demo Mode)
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {allowedRoles.map((r) => (
-                <button
-                  key={r}
-                  type="button"
-                  onClick={() => switchDemoRole(r)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-brand-black hover:bg-gray-800 transition-colors capitalize flex items-center gap-1.5"
-                >
-                  <RefreshCw className="w-3 h-3" />
-                  <span>Switch to {r}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="pt-2">
+          <div className="pt-2 flex flex-col gap-2">
+            <Link
+              to="/login"
+              className="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-black hover:bg-gray-800 transition-colors"
+            >
+              <span>Sign In with Authorized Account</span>
+            </Link>
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-brand-orange"
+              className="inline-flex items-center justify-center gap-2 text-xs font-bold text-gray-600 hover:text-brand-orange py-2"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Return to Public Homepage</span>
