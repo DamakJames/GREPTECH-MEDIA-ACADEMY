@@ -3,7 +3,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   Menu,
   X,
-  Search,
   ArrowRight,
   User,
   ChevronDown,
@@ -16,12 +15,10 @@ import {
   LogOut,
   LayoutDashboard,
 } from 'lucide-react';
-import { SearchModal } from '../common/SearchModal';
 import { useAuth } from '../../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const [coursesDropdown, setCoursesDropdown] = useState(false);
   const [academyDropdown, setAcademyDropdown] = useState(false);
   const [mobileCoursesOpen, setMobileCoursesOpen] = useState(false);
@@ -319,15 +316,6 @@ export const Navbar: React.FC = () => {
 
             {/* Right Action Controls */}
             <div className="hidden lg:flex items-center space-x-3 xl:space-x-4">
-              <button
-                onClick={() => setSearchOpen(true)}
-                aria-label="Search academy"
-                className="p-2 text-gray-500 hover:text-brand-orange hover:bg-gray-100 rounded-full transition-colors flex items-center gap-1.5"
-                title="Search courses & resources"
-              >
-                <Search className="w-4 h-4" />
-              </button>
-
               {user ? (
                 <div className="flex items-center gap-2">
                   <Link
@@ -370,14 +358,6 @@ export const Navbar: React.FC = () => {
 
             {/* Mobile Actions & Hamburger */}
             <div className="flex lg:hidden items-center space-x-2">
-              <button
-                onClick={() => setSearchOpen(true)}
-                aria-label="Search"
-                className="p-2 text-gray-600 hover:text-brand-orange"
-              >
-                <Search className="w-5 h-5" />
-              </button>
-
               <Link
                 to="/apply"
                 className="px-3.5 py-2 text-xs font-bold text-white bg-brand-orange rounded-md"
@@ -596,9 +576,6 @@ export const Navbar: React.FC = () => {
           </div>
         )}
       </header>
-
-      {/* Global Interactive Search Modal */}
-      <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
     </>
   );
 };

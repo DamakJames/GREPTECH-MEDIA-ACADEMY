@@ -70,7 +70,7 @@ export const StudentProjectsPage: React.FC = () => {
                     alt={p.title}
                     className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=600&q=80';
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1200&q=85';
                     }}
                   />
                   <div className="absolute top-4 left-4 bg-brand-black/85 backdrop-blur-sm text-white text-[11px] font-bold px-3 py-1 rounded-md uppercase tracking-wider flex items-center gap-1.5">

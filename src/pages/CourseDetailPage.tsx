@@ -10,6 +10,7 @@ import {
   ArrowRight,
   ShieldCheck,
   Video,
+  User,
 } from 'lucide-react';
 import { coursesData } from '../data/courses';
 
@@ -238,11 +239,9 @@ export const CourseDetailPage: React.FC = () => {
                   Lead Instructor
                 </span>
                 <div className="flex items-center gap-3">
-                  <img
-                    src={course.instructor.avatar}
-                    alt={course.instructor.name}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
+                  <div className="w-12 h-12 rounded-full bg-orange-50 border border-orange-200 flex items-center justify-center text-brand-orange shrink-0 shadow-sm">
+                    <User className="w-6 h-6 text-brand-orange" />
+                  </div>
                   <div>
                     <h4 className="text-sm font-bold text-brand-black">
                       {course.instructor.name}

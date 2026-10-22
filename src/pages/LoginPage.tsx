@@ -201,7 +201,7 @@ export const LoginPage: React.FC = () => {
                   required
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  placeholder="e.g. Samuel Adeleke"
+                  placeholder="e.g. John"
                   className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-orange-100 focus:border-brand-orange"
                 />
               </div>

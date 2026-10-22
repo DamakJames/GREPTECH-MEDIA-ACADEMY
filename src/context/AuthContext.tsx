@@ -115,8 +115,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           demoRole === 'admin'
             ? 'Administrator James'
             : demoRole === 'instructor'
-            ? 'David Nwosu (Instructor)'
-            : 'Samuel Adeleke (Student)',
+            ? 'Chris (Instructor)'
+            : 'John (Student)',
         role: demoRole,
         enrolledCourse: demoRole === 'student' ? 'cinematography-filmmaking' : undefined,
       };
@@ -167,8 +167,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         role === 'admin'
           ? 'Administrator James'
           : role === 'instructor'
-          ? 'David Nwosu (Instructor)'
-          : 'Samuel Adeleke (Student)',
+          ? 'Chris (Instructor)'
+          : 'John (Student)',
       role,
       enrolledCourse: role === 'student' ? 'cinematography-filmmaking' : undefined,
     };

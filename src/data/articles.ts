@@ -13,8 +13,8 @@ export const articlesData: Article[] = [
     ],
     category: 'Cinematography',
     author: {
-      name: 'David Nwosu',
-      role: 'Director of Photography'
+      name: 'Chris',
+      role: 'Lead Cinematography Instructor'
     },
     publishedAt: 'October 14, 2026',
     readTime: '6 min read',
@@ -32,8 +32,8 @@ export const articlesData: Article[] = [
     ],
     category: 'Sound Production',
     author: {
-      name: 'Emeka Eze',
-      role: 'Lead Sound Designer'
+      name: 'Chris',
+      role: 'Lead Audio Instructor'
     },
     publishedAt: 'October 08, 2026',
     readTime: '5 min read',
@@ -51,8 +51,8 @@ export const articlesData: Article[] = [
     ],
     category: 'Graphic Design',
     author: {
-      name: 'Chioma Okeke',
-      role: 'Creative Director'
+      name: 'Valentina Williams',
+      role: 'Lead Design Instructor'
     },
     publishedAt: 'September 29, 2026',
     readTime: '7 min read',

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Quote } from 'lucide-react';
+import { ArrowRight, Quote, User } from 'lucide-react';
 import { testimonialsData } from '../data/testimonials';
 
 export const SuccessStoriesPage: React.FC = () => (
@@ -17,7 +17,9 @@ export const SuccessStoriesPage: React.FC = () => (
         {testimonialsData.map((t) => (
           <div key={t.id} className="bg-white rounded-2xl p-8 sm:p-10 border border-gray-200 shadow-sm flex flex-col md:flex-row gap-8 items-start relative">
             <Quote className="w-10 h-10 text-brand-orange/20 absolute top-6 right-6 hidden md:block" />
-            <img src={t.avatar} alt={t.name} className="w-20 h-20 rounded-full object-cover ring-4 ring-brand-orange/20 shrink-0" />
+            <div className="w-16 h-16 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-400 shrink-0 shadow-inner">
+              <User className="w-8 h-8 text-gray-400" />
+            </div>
             <div className="space-y-4 flex-1">
               <p className="text-sm text-gray-700 leading-relaxed italic">"{t.quote}"</p>
               <div className="pt-4 border-t border-gray-100">

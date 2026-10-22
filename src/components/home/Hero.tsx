@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight, Play, User } from 'lucide-react';
 
 export const Hero: React.FC = () => {
   return (
@@ -54,21 +54,15 @@ export const Hero: React.FC = () => {
             {/* Social Proof */}
             <div className="flex items-center gap-3 pt-4">
               <div className="flex -space-x-2 overflow-hidden">
-                <img
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-brand-black object-cover"
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=100&q=80"
-                  alt="Student"
-                />
-                <img
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-brand-black object-cover"
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=100&q=80"
-                  alt="Student"
-                />
-                <img
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-brand-black object-cover"
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=100&q=80"
-                  alt="Student"
-                />
+                <div className="inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-brand-black bg-brand-card text-brand-orange border border-brand-border">
+                  <User className="w-4 h-4" />
+                </div>
+                <div className="inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-brand-black bg-gray-800 text-gray-300 border border-brand-border">
+                  <User className="w-4 h-4" />
+                </div>
+                <div className="inline-flex items-center justify-center h-8 w-8 rounded-full ring-2 ring-brand-black bg-brand-card text-brand-orange border border-brand-border">
+                  <User className="w-4 h-4" />
+                </div>
               </div>
               <p className="text-xs text-gray-400 font-medium">
                 Join a new generation of creative professionals

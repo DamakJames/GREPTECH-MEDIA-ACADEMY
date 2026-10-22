@@ -123,6 +123,7 @@ export const AdmissionsService = {
       educationalBackground: data.educationalBackground,
       emergencyContact: data.emergencyContact,
       privacyConsent: data.privacyConsent,
+      passportPhotoUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80',
       status: 'submitted',
       adminNotes: 'Application received and placed in review queue.',
       submittedAt: nowIso,

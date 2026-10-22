@@ -65,10 +65,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['Adobe Lightroom Classic', 'Adobe Photoshop', 'Capture One Pro'],
     instructor: {
-      name: 'Michael Adebayo',
-      role: 'Lead Photography Mentor & Commercial Photographer',
-      bio: 'Over a decade of editorial and commercial photography experience for major fashion houses and corporate brands across West Africa.',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'
+      name: 'Valentina Williams',
+      role: 'Lead Photography Instructor & Creative Director',
+      bio: 'Commercial and editorial photography mentor guiding students through studio lighting, editorial storytelling, and portfolio curation.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -139,10 +139,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['DaVinci Resolve Studio', 'Adobe Premiere Pro', 'Final Draft'],
     instructor: {
-      name: 'David Nwosu',
-      role: 'Director of Photography & Filmmaker',
-      bio: 'Award-winning cinematographer with feature film and commercial directing credits across Nollywood and international festivals.',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80'
+      name: 'Chris',
+      role: 'Lead Cinematography Instructor & Director of Photography',
+      bio: 'Professional cinematographer and media technologist with extensive commercial, documentary, and narrative production experience.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -212,10 +212,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['Adobe Illustrator', 'Adobe Photoshop', 'Adobe InDesign', 'Figma'],
     instructor: {
-      name: 'Chioma Okeke',
-      role: 'Brand Designer & Creative Director',
-      bio: 'Senior brand identity specialist who has created visual identities and packaging for leading African consumer brands.',
-      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80'
+      name: 'Valentina Williams',
+      role: 'Lead Design Instructor & Creative Director',
+      bio: 'Brand identity specialist and visual strategist guiding students in typography, digital visual systems, and creative direction.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -285,10 +285,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['CapCut Pro', 'Adobe Premiere Pro', 'Adobe Photoshop', 'Descript'],
     instructor: {
-      name: 'Tunde Bakare',
-      role: 'Digital Strategist & Content Creator',
-      bio: 'Prolific tech and lifestyle content creator who has amassed over 500k followers across digital platforms and consulted for top media agencies.',
-      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80'
+      name: 'Valentina Williams',
+      role: 'Lead Content Instructor & Digital Strategist',
+      bio: 'Media producer specializing in multi-platform content strategy, mobile filmmaking, and audience growth across digital platforms.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -359,10 +359,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['Avid Pro Tools', 'Apple Logic Pro', 'iZotope RX Advanced'],
     instructor: {
-      name: 'Emeka Eze',
-      role: 'Lead Sound Designer & Re-Recording Mixer',
-      bio: 'Veteran audio engineer with sound design credits on multiple Netflix and Amazon Prime feature productions.',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80'
+      name: 'Chris',
+      role: 'Lead Audio Instructor & Sound Supervisor',
+      bio: 'Sound supervisor and audio engineer with expertise in acoustic Foley generation, multi-track mixing, and audio post-production.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -433,10 +433,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['Blackmagic ATEM Software', 'vMix Pro', 'OBS Studio', 'ProPresenter'],
     instructor: {
-      name: 'Kenneth Danjuma',
-      role: 'Broadcast Operations Director & Live Production Engineer',
-      bio: 'Technical lead responsible for live broadcast operations for major concerts, national conferences, and international television feeds.',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80'
+      name: 'Chris',
+      role: 'Lead Broadcast Instructor & Technical Director',
+      bio: 'Multi-camera broadcast engineer experienced in live video routing, ATEM switchers, broadcast audio, and remote streaming feeds.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',
@@ -506,10 +506,10 @@ export const coursesData: Course[] = [
     ],
     softwareCovered: ['Adobe Audition', 'Reaper', 'iZotope Ozone & Nectar'],
     instructor: {
-      name: 'Victoria Alabi',
-      role: 'Commercial Voice Actor & Vocal Coach',
-      bio: 'Leading African voice talent whose voice has powered national TV campaigns, audiobooks, and international animation productions.',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80'
+      name: 'Chris',
+      role: 'Lead Audio Instructor & Production Mentor',
+      bio: 'Studio audio director with extensive background in broadcast narration, character voicing, and vocal recording booth techniques.',
+      avatar: ''
     },
     tuitionFee: 'Details to be announced',
     startDate: 'Upcoming Cohort — Admissions Open',

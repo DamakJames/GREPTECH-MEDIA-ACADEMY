@@ -1,5 +1,5 @@
 import React from 'react';
-import { Quote } from 'lucide-react';
+import { Quote, User } from 'lucide-react';
 import { testimonialsData } from '../../data/testimonials';
 
 export const TestimonialsSection: React.FC = () => {
@@ -33,11 +33,9 @@ export const TestimonialsSection: React.FC = () => {
               </p>
 
               <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                <img
-                  src={t.avatar}
-                  alt={t.name}
-                  className="w-11 h-11 rounded-full object-cover ring-2 ring-brand-orange/20"
-                />
+                <div className="w-11 h-11 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 shadow-inner shrink-0">
+                  <User className="w-5 h-5 text-gray-400" />
+                </div>
                 <div>
                   <h4 className="text-sm font-bold text-brand-black">{t.name}</h4>
                   <p className="text-xs text-brand-orange font-medium">{t.careerRole}</p>

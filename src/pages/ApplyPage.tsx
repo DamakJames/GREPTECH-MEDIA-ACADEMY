@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import {
-  Upload,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
   User,
   Shield,
-  X,
   Loader2,
-  Database,
   BookOpen,
 } from 'lucide-react';
 import { coursesData } from '../data/courses';
 import { AdmissionsService } from '../services/admissions.service';
-import { isFirebaseConfigured } from '../lib/firebase';
 
 export const ApplyPage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -36,8 +32,6 @@ export const ApplyPage: React.FC = () => {
     privacyConsent: false,
   });
 
-  const [passportPreview, setPassportPreview] = useState<string | null>(null);
-  const [passportFile, setPassportFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [referenceId, setReferenceId] = useState<string>('');
@@ -66,35 +60,6 @@ export const ApplyPage: React.FC = () => {
         return copy;
       });
     }
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      if (file.size > 2 * 1024 * 1024) {
-        setErrors((prev) => ({
-          ...prev,
-          passport: 'Photograph must be under 2MB in size.',
-        }));
-        return;
-      }
-      setPassportFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPassportPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-      setErrors((prev) => {
-        const copy = { ...prev };
-        delete copy.passport;
-        return copy;
-      });
-    }
-  };
-
-  const removePhoto = () => {
-    setPassportFile(null);
-    setPassportPreview(null);
   };
 
   const validateForm = () => {
@@ -133,10 +98,6 @@ export const ApplyPage: React.FC = () => {
       newErrors.emergencyPhone = 'Emergency contact phone is required';
     }
 
-    if (!passportPreview) {
-      newErrors.passport = 'Passport photograph is required';
-    }
-
     if (!formData.privacyConsent) {
       newErrors.privacyConsent = 'You must accept the privacy policy to submit';
     }
@@ -166,7 +127,7 @@ export const ApplyPage: React.FC = () => {
         selectedDuration: formData.selectedDuration,
         previousExperience: formData.previousExperience as any,
         educationalBackground: formData.educationalBackground,
-        passportPhoto: passportFile,
+        passportPhoto: null,
         emergencyContact: {
           name: formData.emergencyName,
           phone: formData.emergencyPhone,
@@ -201,21 +162,6 @@ export const ApplyPage: React.FC = () => {
           <p className="text-sm sm:text-base text-gray-600 max-w-xl mx-auto">
             Take the first step toward becoming an industry-ready media professional. Complete the form below to apply.
           </p>
-        </div>
-
-        {/* Backend Status Banner */}
-        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 flex items-start gap-3">
-          <Database className="w-5 h-5 text-brand-orange shrink-0 mt-0.5" />
-          <div className="text-xs text-orange-950 leading-relaxed">
-            <span className="font-bold">
-              {isFirebaseConfigured
-                ? 'Cloud Firestore & Storage Connected:'
-                : 'Stage 2 Architecture Ready:'}
-            </span>{' '}
-            {isFirebaseConfigured
-              ? 'Applications write atomically to Firestore with passport photo uploads in Firebase Storage.'
-              : 'Firebase SDK and data services are initialized. Add your project keys to .env.local to route directly to your live Firebase project.'}
-          </div>
         </div>
 
         {isSubmitted ? (
@@ -272,7 +218,6 @@ export const ApplyPage: React.FC = () => {
                     emergencyRelationship: 'Parent',
                     privacyConsent: false,
                   });
-                  setPassportPreview(null);
                 }}
                 className="px-6 py-3 rounded-xl text-xs font-bold text-brand-orange bg-orange-50 hover:bg-orange-100 transition-colors"
               >
@@ -503,61 +448,11 @@ export const ApplyPage: React.FC = () => {
               </div>
             </div>
 
-            {/* Step 3: Passport Photograph Upload */}
-            <div className="space-y-4">
-              <h3 className="text-lg font-bold text-brand-black flex items-center gap-2 border-b border-gray-100 pb-3">
-                <Upload className="w-5 h-5 text-brand-orange" />
-                <span>3. Passport Photograph</span>
-              </h3>
-
-              <div className="flex flex-col sm:flex-row items-center gap-6">
-                {passportPreview ? (
-                  <div className="relative w-32 h-32 rounded-xl overflow-hidden border-2 border-brand-orange shadow-md">
-                    <img
-                      src={passportPreview}
-                      alt="Passport Preview"
-                      className="w-full h-full object-cover"
-                    />
-                    <button
-                      type="button"
-                      onClick={removePhoto}
-                      className="absolute top-1 right-1 p-1 bg-red-600 text-white rounded-full hover:bg-red-700"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ) : (
-                  <div className="w-32 h-32 rounded-xl bg-gray-100 border-2 border-dashed border-gray-300 flex flex-col items-center justify-center text-gray-400 p-2 text-center">
-                    <User className="w-8 h-8 mb-1" />
-                    <span className="text-[10px] font-medium">Passport Preview</span>
-                  </div>
-                )}
-
-                <div className="space-y-2 flex-1">
-                  <label className="inline-block px-4 py-2.5 rounded-xl border border-gray-300 text-xs font-bold text-gray-700 hover:border-brand-orange hover:text-brand-orange cursor-pointer transition-colors bg-white shadow-sm">
-                    <span>Upload Recent Passport (Max 2MB)</span>
-                    <input
-                      type="file"
-                      accept="image/png, image/jpeg"
-                      onChange={handleFileChange}
-                      className="sr-only"
-                    />
-                  </label>
-                  <p className="text-[11px] text-gray-500">
-                    A clear, front-facing passport photograph with a light background. Supported formats: JPEG, PNG.
-                  </p>
-                  {errors.passport && (
-                    <p className="text-xs text-red-500 font-medium">{errors.passport}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            {/* Step 4: Emergency Contact */}
+            {/* Step 3: Emergency Contact */}
             <div className="space-y-4">
               <h3 className="text-lg font-bold text-brand-black flex items-center gap-2 border-b border-gray-100 pb-3">
                 <Shield className="w-5 h-5 text-brand-orange" />
-                <span>4. Emergency Contact</span>
+                <span>3. Emergency Contact</span>
               </h3>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
