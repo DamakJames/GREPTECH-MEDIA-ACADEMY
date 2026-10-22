@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
+import { AuthProvider } from './context/AuthContext';
+import { ProtectedRoute } from './components/auth/ProtectedRoute';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
 import { CoursesPage } from './pages/CoursesPage';
@@ -19,6 +21,9 @@ import { LoginPage } from './pages/LoginPage';
 import { CertificateVerifyPage } from './pages/CertificateVerifyPage';
 import { AdmissionsStatusPage } from './pages/AdmissionsStatusPage';
 import { AdminAdmissionsPage } from './pages/AdminAdmissionsPage';
+import { StudentDashboardPage } from './pages/portal/StudentDashboardPage';
+import { InstructorDashboardPage } from './pages/portal/InstructorDashboardPage';
+import { AdminDashboardPage } from './pages/portal/AdminDashboardPage';
 
 // Scroll to top on route change
 const ScrollToTop: React.FC = () => {
@@ -34,34 +39,80 @@ const ScrollToTop: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <Router>
-      <ScrollToTop />
-      <div className="flex flex-col min-h-screen bg-brand-light font-sans text-brand-black antialiased selection:bg-brand-orange selection:text-white">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/courses" element={<CoursesPage />} />
-            <Route path="/courses/:slug" element={<CourseDetailPage />} />
-            <Route path="/admissions" element={<AdmissionsPage />} />
-            <Route path="/admissions/status" element={<AdmissionsStatusPage />} />
-            <Route path="/admin/admissions" element={<AdminAdmissionsPage />} />
-            <Route path="/apply" element={<ApplyPage />} />
-            <Route path="/online-training" element={<OnlineTrainingPage />} />
-            <Route path="/student-projects" element={<StudentProjectsPage />} />
-            <Route path="/facilities" element={<FacilitiesPage />} />
-            <Route path="/success-stories" element={<SuccessStoriesPage />} />
-            <Route path="/media" element={<MediaPage />} />
-            <Route path="/media/:slug" element={<ArticleDetailPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/certificate/verify" element={<CertificateVerifyPage />} />
-            <Route path="/certificate/verify/:certificateId" element={<CertificateVerifyPage />} />
-            <Route path="*" element={<HomePage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AuthProvider>
+        <ScrollToTop />
+        <div className="flex flex-col min-h-screen bg-brand-light font-sans text-brand-black antialiased selection:bg-brand-orange selection:text-white">
+          <Navbar />
+          <main className="flex-1">
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/courses" element={<CoursesPage />} />
+              <Route path="/courses/:slug" element={<CourseDetailPage />} />
+              <Route path="/admissions" element={<AdmissionsPage />} />
+              <Route path="/admissions/status" element={<AdmissionsStatusPage />} />
+              <Route path="/apply" element={<ApplyPage />} />
+              <Route path="/online-training" element={<OnlineTrainingPage />} />
+              <Route path="/student-projects" element={<StudentProjectsPage />} />
+              <Route path="/facilities" element={<FacilitiesPage />} />
+              <Route path="/success-stories" element={<SuccessStoriesPage />} />
+              <Route path="/media" element={<MediaPage />} />
+              <Route path="/media/:slug" element={<ArticleDetailPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/certificate/verify" element={<CertificateVerifyPage />} />
+              <Route path="/certificate/verify/:certificateId" element={<CertificateVerifyPage />} />
+
+              {/* Role-Protected Portals (Stage 4) */}
+              <Route
+                path="/portal/student"
+                element={
+                  <ProtectedRoute allowedRoles={['student', 'admin']}>
+                    <StudentDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/portal/instructor"
+                element={
+                  <ProtectedRoute allowedRoles={['instructor', 'admin']}>
+                    <InstructorDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/portal/admin"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminDashboardPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin/admissions"
+                element={
+                  <ProtectedRoute allowedRoles={['admin']}>
+                    <AdminAdmissionsPage />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Fallback */}
+              <Route path="*" element={<HomePage />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </AuthProvider>
     </Router>
   );
 };

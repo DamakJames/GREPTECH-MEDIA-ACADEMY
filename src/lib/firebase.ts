@@ -4,21 +4,20 @@ import { getFirestore, connectFirestoreEmulator, type Firestore } from 'firebase
 import { getStorage, connectStorageEmulator, type FirebaseStorage } from 'firebase/storage';
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY || 'AIzaSyCSzMPX59qjRT3I-vvXoSlpW9icgZQlhpI',
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN || 'greptech-media-academy.firebaseapp.com',
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID || 'greptech-media-academy',
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET || 'greptech-media-academy.firebasestorage.app',
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID || '837273969466',
+  appId: import.meta.env.VITE_FIREBASE_APP_ID || '1:837273969466:web:ba4b4edc8eef953afc2603',
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Check if valid credentials are provided
+// Check if valid production credentials are provided
 export const isFirebaseConfigured = Boolean(
   firebaseConfig.apiKey &&
-  firebaseConfig.apiKey !== 'your_api_key_here' &&
-  firebaseConfig.projectId &&
-  firebaseConfig.projectId !== 'greptech-media-academy'
+  firebaseConfig.apiKey.startsWith('AIza') &&
+  firebaseConfig.projectId === 'greptech-media-academy'
 );
 
 let app: FirebaseApp | null = null;

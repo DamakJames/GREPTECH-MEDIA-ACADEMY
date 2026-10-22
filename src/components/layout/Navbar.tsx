@@ -13,8 +13,11 @@ import {
   GraduationCap,
   FileText,
   Info,
+  LogOut,
+  LayoutDashboard,
 } from 'lucide-react';
 import { SearchModal } from '../common/SearchModal';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar: React.FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -25,6 +28,21 @@ export const Navbar: React.FC = () => {
   const [mobileAcademyOpen, setMobileAcademyOpen] = useState(false);
 
   const location = useLocation();
+  const { user, logout } = useAuth();
+
+  const getDashboardRoute = () => {
+    if (!user) return '/login';
+    if (user.role === 'admin') return '/portal/admin';
+    if (user.role === 'instructor') return '/portal/instructor';
+    return '/portal/student';
+  };
+
+  const getDashboardLabel = () => {
+    if (!user) return 'Student Portal';
+    if (user.role === 'admin') return 'Admin Suite';
+    if (user.role === 'instructor') return 'Faculty Portal';
+    return 'My Portal';
+  };
 
   const isRouteActive = (path: string) => {
     if (path === '/') return location.pathname === '/';
@@ -310,13 +328,36 @@ export const Navbar: React.FC = () => {
                 <Search className="w-4 h-4" />
               </button>
 
-              <Link
-                to="/login"
-                className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-white bg-brand-black hover:bg-gray-900 rounded-lg transition-all duration-200 shadow-sm"
-              >
-                <User className="w-3.5 h-3.5" />
-                <span>Student Portal</span>
-              </Link>
+              {user ? (
+                <div className="flex items-center gap-2">
+                  <Link
+                    to={getDashboardRoute()}
+                    className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-white bg-brand-black hover:bg-gray-900 rounded-lg transition-all duration-200 shadow-sm border border-gray-800"
+                  >
+                    <LayoutDashboard className="w-3.5 h-3.5 text-brand-orange" />
+                    <span>{getDashboardLabel()}</span>
+                    <span className="text-[10px] uppercase font-extrabold px-1.5 py-0.5 rounded bg-brand-orange/20 text-brand-orange">
+                      {user.role}
+                    </span>
+                  </Link>
+                  <button
+                    onClick={() => logout()}
+                    title="Sign Out"
+                    className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    aria-label="Sign out"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </button>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center gap-1.5 px-4 py-2.5 text-xs font-semibold text-white bg-brand-black hover:bg-gray-900 rounded-lg transition-all duration-200 shadow-sm"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Student Portal</span>
+                </Link>
+              )}
 
               <Link
                 to="/apply"
@@ -495,22 +536,62 @@ export const Navbar: React.FC = () => {
             </div>
 
             <div className="pt-4 border-t border-gray-100 flex flex-col gap-2.5">
-              <Link
-                to="/login"
-                onClick={closeAll}
-                className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-white bg-brand-black rounded-lg"
-              >
-                <User className="w-4 h-4" />
-                <span>Student Portal Login</span>
-              </Link>
-              <Link
-                to="/apply"
-                onClick={closeAll}
-                className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-white bg-brand-orange rounded-lg shadow-md"
-              >
-                <span>Apply Now for Cohort</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              {user ? (
+                <div className="space-y-2.5">
+                  <div className="p-3 rounded-lg bg-gray-50 border border-gray-200 flex items-center justify-between">
+                    <div>
+                      <p className="text-xs font-bold text-brand-black">{user.displayName || user.email}</p>
+                      <p className="text-[10px] uppercase font-bold text-brand-orange">{user.role} Account</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        logout();
+                        closeAll();
+                      }}
+                      className="text-xs text-red-600 hover:underline font-semibold flex items-center gap-1"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Logout</span>
+                    </button>
+                  </div>
+                  <Link
+                    to={getDashboardRoute()}
+                    onClick={closeAll}
+                    className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-white bg-brand-black rounded-lg shadow-sm"
+                  >
+                    <LayoutDashboard className="w-4 h-4 text-brand-orange" />
+                    <span>Go to {getDashboardLabel()}</span>
+                  </Link>
+                  <Link
+                    to="/apply"
+                    onClick={closeAll}
+                    className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-white bg-brand-orange rounded-lg shadow-md"
+                  >
+                    <span>Apply for New Cohort</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </div>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    onClick={closeAll}
+                    className="flex items-center justify-center gap-2 w-full py-3 text-sm font-semibold text-white bg-brand-black rounded-lg"
+                  >
+                    <User className="w-4 h-4" />
+                    <span>Student Portal Login</span>
+                  </Link>
+                  <Link
+                    to="/apply"
+                    onClick={closeAll}
+                    className="flex items-center justify-center gap-2 w-full py-3 text-sm font-bold text-white bg-brand-orange rounded-lg shadow-md"
+                  >
+                    <span>Apply Now for Cohort</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         )}
