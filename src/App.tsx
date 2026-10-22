@@ -17,6 +17,8 @@ import { ArticleDetailPage } from './pages/ArticleDetailPage';
 import { ContactPage } from './pages/ContactPage';
 import { LoginPage } from './pages/LoginPage';
 import { CertificateVerifyPage } from './pages/CertificateVerifyPage';
+import { AdmissionsStatusPage } from './pages/AdmissionsStatusPage';
+import { AdminAdmissionsPage } from './pages/AdminAdmissionsPage';
 
 // Scroll to top on route change
 const ScrollToTop: React.FC = () => {
@@ -42,6 +44,8 @@ export const App: React.FC = () => {
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/courses/:slug" element={<CourseDetailPage />} />
             <Route path="/admissions" element={<AdmissionsPage />} />
+            <Route path="/admissions/status" element={<AdmissionsStatusPage />} />
+            <Route path="/admin/admissions" element={<AdminAdmissionsPage />} />
             <Route path="/apply" element={<ApplyPage />} />
             <Route path="/online-training" element={<OnlineTrainingPage />} />
             <Route path="/student-projects" element={<StudentProjectsPage />} />

@@ -91,13 +91,19 @@ export const AdmissionsPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="pt-2">
+              <div className="pt-2 space-y-2.5">
                 <Link
                   to="/apply"
                   className="w-full flex items-center justify-center gap-2 py-3.5 rounded-xl text-sm font-bold text-white bg-brand-orange hover:bg-brand-orange-hover transition-colors shadow-md"
                 >
                   <span>Start Online Application</span>
                   <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/admissions/status"
+                  className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl text-xs font-bold text-gray-300 bg-brand-black hover:text-white border border-brand-border transition-colors"
+                >
+                  <span>Already applied? Track your status →</span>
                 </Link>
               </div>
 

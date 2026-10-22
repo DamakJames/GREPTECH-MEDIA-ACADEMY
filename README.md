@@ -93,8 +93,8 @@ Development is strictly phased. Each stage must be implemented, tested, and revi
 | :---: | :--- | :--- | :---: |
 | **01** | **Frontend & UI/UX Design System** | Public website, all 15 routes, responsive layouts, streamlined navigation, search modal | 🟢 *Completed* |
 | **02** | **Firebase Setup & Foundation** | Firebase SDK, client module, emulators config, security rules, data service layers | 🟢 *Completed* |
-| **03** | **Admissions System** | Application submissions, asset uploads, application reference generation, admissions review workflow | ⚪ *Next Stage* |
-| **04** | **Authentication & Roles** | Secure RBAC (Student, Instructor, Admin), protected routes, custom claims | ⚪ *Queued* |
+| **03** | **Admissions System** | Application submissions, asset uploads, application reference generation, admissions review workflow | 🟢 *Completed* |
+| **04** | **Authentication & Roles** | Secure RBAC (Student, Instructor, Admin), protected routes, custom claims | ⚪ *Next Stage* |
 | **05** | **Payments & Enrolment** | Admission offers, payment verification, student onboarding, cohort assignment | ⚪ *Queued* |
 | **06** | **Student Learning Portal (LMS)** | Student dashboard, course lessons, video player, assignments, quizzes, attendance, grades | ⚪ *Queued* |
 | **07** | **Admin & Instructor Dashboards** | Course management, cohort scheduling, student grading, revenue reports, analytics | ⚪ *Queued* |

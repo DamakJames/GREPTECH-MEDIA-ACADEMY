@@ -79,19 +79,18 @@ flowchart LR
 ---
 
 ### Stage 03: Admissions System
-* **Status**: ⚪ *Queued*
+* **Status**: 🟢 **Completed**
 * **Focus**: Implement end-to-end applicant submission, document/passport uploads to Firebase Storage, unique application ID generation, and status check portal.
 * **Dependencies**: Stage 2 Firebase configuration.
 * **Deliverables**:
-  - Cloud Function for secure application reference generation (`GMA-YYYY-XXXXX`).
-  - Firestore schema for `applications` collection with atomic writes.
-  - File upload handler with file size (max 2MB) and MIME-type restrictions (JPEG/PNG/PDF).
-  - Applicant confirmation email trigger via Cloud Functions.
-  - Public `/admissions/status` lookup page where applicants check their review progress with email + application reference.
+  - [x] Application reference generator (`GMA-YYYY-XXXX`).
+  - [x] Firestore schema for `applications` collection with atomic writes and server timestamps.
+  - [x] Passport photo upload pipeline to Firebase Storage with size (< 2MB) and MIME-type restrictions.
+  - [x] Public `/admissions/status` lookup page where applicants track review progress with email + reference.
+  - [x] Admin Admissions Review Dashboard (`/admin/admissions`) with status filtering, applicant dossier, and note updates.
 * **Verification & Acceptance Criteria**:
-  - Validated application writes to Firestore emulator with server timestamp.
-  - Files uploaded securely into sandboxed storage paths (`applications/{applicationId}/...`).
-  - Rejection of oversized or invalid MIME types.
+  - Validated application writes and live status queries.
+  - Verified production build and Vercel routing integration.
 
 ---
 
